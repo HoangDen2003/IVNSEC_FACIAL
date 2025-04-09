@@ -30,4 +30,9 @@ public class AuthenticationController {
                 .message("Login successfully")
                 .build();
     }
+
+    @PostMapping("/test")
+    ApiResponse<String> test() {
+        return ApiResponse.<String>builder().result("TEST").code(200).build();
+    }
 }

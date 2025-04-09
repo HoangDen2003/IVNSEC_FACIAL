@@ -1,5 +1,7 @@
 package com.facial.mapper;
 
+import java.util.Date;
+
 import org.mapstruct.Mapper;
 
 import com.facial.dto.request.AuthenticationRequest;
@@ -10,5 +12,5 @@ import com.facial.entity.User;
 public interface UserMapper {
     User toUser(AuthenticationRequest authenticationRequest);
 
-    AuthenticationResponse toAuthenticationReponse(User user, String token);
+    AuthenticationResponse toAuthenticationReponse(User user, String token, Date expiresAt);
 }

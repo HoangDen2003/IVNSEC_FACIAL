@@ -15,7 +15,6 @@ public class SecurityConfig {
 
     private final String[] PUBLIC_ENDPOINTS_POST = {"/auth/login"};
     private final String[] PUBLIC_ENDPOINTS_GET = {};
-
     private final String[] PUBLIC_ENDPOINTS_PUT = {};
 
     @Value("${jwt.signerKey}")
@@ -25,19 +24,20 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.authorizeHttpRequests(requests -> requests.requestMatchers(HttpMethod.POST, PUBLIC_ENDPOINTS_POST)
                 .permitAll()
-                //                .requestMatchers(HttpMethod.GET, PUBLIC_ENDPOINTS_GET)
-                //                .permitAll()
-                //                .requestMatchers(HttpMethod.PUT, PUBLIC_ENDPOINTS_PUT)
-                //                .permitAll()
-                //                .requestMatchers("/auth/{id}").hasRole("SYSTEM_ADMIN")  // why ??
+                //                                .requestMatchers(HttpMethod.GET, PUBLIC_ENDPOINTS_GET)
+                //                                .permitAll()
+                //                                .requestMatchers(HttpMethod.PUT, PUBLIC_ENDPOINTS_PUT)
+                //                                .permitAll()
+                //                                .requestMatchers("/auth/{id}").hasRole("SYSTEM_ADMIN")  // why ??
                 .anyRequest()
                 .authenticated());
         httpSecurity.csrf(AbstractHttpConfigurer::disable);
 
         // decoder token
-        //        httpSecurity.oauth2ResourceServer(oauth2 -> oauth2.jwt(jwtConfigurer ->
-        //                jwtConfigurer.decoder(jwtDecoder()).jwtAuthenticationConverter(jwtAuthenticationConverter()))
-        //                .authenticationEntryPoint(new JwtAuthenticationEntryPoint()));
+        //                httpSecurity.oauth2ResourceServer(oauth2 -> oauth2.jwt(jwtConfigurer ->
+        //
+        // jwtConfigurer.decoder(jwtDecoder()).jwtAuthenticationConverter(jwtAuthenticationConverter()))
+        //                        .authenticationEntryPoint(new JwtAuthenticationEntryPoint()));
 
         return httpSecurity.build();
     }

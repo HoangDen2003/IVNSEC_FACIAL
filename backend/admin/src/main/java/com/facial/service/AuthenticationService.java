@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import com.facial.configuration.JwtProvider;
 import com.facial.dto.request.AuthenticationRequest;
 import com.facial.dto.response.AuthenticationResponse;
+import com.facial.dto.response.JwtTokenResponse;
 import com.facial.entity.User;
 import com.facial.mapper.UserMapper;
 import com.facial.repository.UserRepository;
@@ -32,11 +33,8 @@ public class AuthenticationService {
         //        if (!authenticated) throw new AppException(ErrorCode.USER_NOT_EXISTED);
 
         // generate token
-        var token = jwtProvider.generateToken(user);
-        //
-        //        InvalidatedToken invalidatedToken = new InvalidatedToken();
-        //        invalidatedToken.setId(token);
+        JwtTokenResponse jwtRps = jwtProvider.generateToken(user);
 
-        return userMapper.toAuthenticationReponse(user, token);
+        return userMapper.toAuthenticationReponse(user, jwtRps.getToken(), jwtRps.getExpiresAt());
     }
 }
