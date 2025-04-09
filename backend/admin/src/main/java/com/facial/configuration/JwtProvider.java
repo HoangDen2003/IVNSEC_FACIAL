@@ -1,5 +1,7 @@
 package com.facial.configuration;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.Date;
 import java.util.UUID;
 
@@ -7,6 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
 import com.facial.constant.ProviderJwt;
+import com.facial.dto.response.JwtTokenResponse;
 import com.facial.entity.User;
 import com.nimbusds.jose.*;
 import com.nimbusds.jose.crypto.MACSigner;
@@ -38,19 +41,21 @@ public class JwtProvider {
     @Value("${jwt.refreshable-duration}")
     protected long REFRESHABLE_DURATION;
 
-    public String generateToken(User user) {
+    public JwtTokenResponse generateToken(User user) {
         //      Đây là một lớp đại diện cho phần "header" của một JSON Web Signature (JWS). Header này chứa thông tin về
         // thuật toán mã hóa và kiểu của token.
         JWSHeader header = new JWSHeader(JWSAlgorithm.HS512);
 
+        // expiration time
+        Date ext = new Date(
+                Instant.now().plus(Duration.ofSeconds(provider.VALID_DURATION)).toEpochMilli());
+
         //      Payload JWT
         JWTClaimsSet jwtClaimsSet = new JWTClaimsSet.Builder()
                 .subject(user.getEmail())
-                .issuer("Hoang") // Thiết lập người phát hành (issuer) của JWT
+                //                .issuer("Hoang") // Thiết lập người phát hành (issuer) của JWT
                 .issueTime(new Date())
-                //                .expirationTime(new Date(Instant.now()
-                //                        .plus(provider.VALID_DURATION, ChronoUnit.SECONDS)
-                //                        .toEpochMilli()))
+                .expirationTime(ext)
                 .jwtID(UUID.randomUUID().toString())
                 //                .claim("scope", buildScope(user))
                 .build();
@@ -61,9 +66,9 @@ public class JwtProvider {
 
         try {
             jwsObject.sign(new MACSigner(provider.SIGNER_KEY.getBytes()));
-            return jwsObject.serialize();
+            String token = jwsObject.serialize();
+            return new JwtTokenResponse(token, ext);
         } catch (JOSEException e) {
-            //            log.error("Cannot create token", e);
             throw new RuntimeException(e);
         }
     }
