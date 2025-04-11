@@ -1,22 +1,20 @@
 package com.facial.dto.response;
 
-import java.util.Date;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.facial.constant.StatusUser;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 @Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class AuthenticationResponse {
+public class UserResponse {
+    Integer id;
     String email;
     String role;
-    String token;
-
-    @JsonProperty("expires_at")
-    Date expiresAt;
+    StatusUser status;
 }

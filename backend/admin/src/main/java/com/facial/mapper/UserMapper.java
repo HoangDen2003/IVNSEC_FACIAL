@@ -1,16 +1,14 @@
 package com.facial.mapper;
 
-import java.util.Date;
-
 import org.mapstruct.Mapper;
 
-import com.facial.dto.request.AuthenticationRequest;
-import com.facial.dto.response.AuthenticationResponse;
+import com.facial.dto.request.UserRequest;
+import com.facial.dto.response.UserResponse;
 import com.facial.entity.User;
 
-@Mapper()
+@Mapper(componentModel = "spring")
 public interface UserMapper {
-    User toUser(AuthenticationRequest authenticationRequest);
+    User toUser(UserRequest userRequest);
 
-    AuthenticationResponse toAuthenticationReponse(User user, String token, Date expiresAt);
+    UserResponse toUserRepspone(User user);
 }

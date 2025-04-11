@@ -31,8 +31,20 @@ public class AuthenticationController {
                 .build();
     }
 
+    //    @PostMapping("/register")
+    //    ApiResponse<UserResponse> register(@RequestBody UserRequest userRequest) {
+    //        return ApiResponse.<UserResponse>builder()
+    //                .result(authenticationService.register(userRequest))
+    //                .code(200)
+    //                .message("Register successfully")
+    //                .build();
+    //    }
+
     @PostMapping("/test")
     ApiResponse<String> test() {
-        return ApiResponse.<String>builder().result("TEST").code(200).build();
+        return ApiResponse.<String>builder()
+                .result(authenticationService.check())
+                .code(200)
+                .build();
     }
 }
